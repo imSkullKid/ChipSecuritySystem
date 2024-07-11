@@ -10,8 +10,10 @@ You recently had a state of the art security system installed in your home.
         to the corresponding markers.
 
 You are given a set of bi-colored chips and an empty channel the chips can be slotted into.
- On each end of the channel is a colored marker, with the starting marker being blue and the ending marker being green.
-  Chips are to be placed end to end into the channel such that the adjacent colors match and the starting and ending chips are color matched to the corresponding markers. As an example, you are given the following chips:
+On each end of the channel is a colored marker, with the starting marker being blue and the ending marker being green.
+Chips are to be placed end to end into the channel such that the adjacent colors match and the starting and ending chips are color matched to the corresponding markers.
+
+As an example, you are given the following chips:
 
 [Blue, Yellow]
 [Red, Green]
