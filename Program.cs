@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ChipSecuritySystem
 {
@@ -10,7 +8,7 @@ namespace ChipSecuritySystem
     {
         static void Main(string[] args)
         {
-            var chips = new List<ColorChip>
+            List<ColorChip> chips = new List<ColorChip>
             {
                 new ColorChip(Color.Blue, Color.Yellow),
                 new ColorChip(Color.Red, Color.Green),
@@ -18,9 +16,9 @@ namespace ChipSecuritySystem
                 new ColorChip(Color.Orange, Color.Purple)
             };
 
-            var result = FindChipSequence(chips);
+            var result = FindLongestSequence(chips, Color.Blue, Color.Green);
 
-            if (result != null)
+            if (result != null && result.Any())
             {
                 Console.WriteLine("Sequence found:");
                 foreach (var chip in result)
@@ -32,47 +30,40 @@ namespace ChipSecuritySystem
             {
                 Console.WriteLine(Constants.ErrorMessage);
             }
+
             Console.WriteLine("Press Enter to exit...");
             Console.ReadLine();
         }
 
-        static List<ColorChip> FindChipSequence(List<ColorChip> chips)
+        static List<ColorChip> FindLongestSequence(List<ColorChip> chips, Color startColor, Color endColor)
         {
-            var sequence = new List<ColorChip>();
-            bool found = FindSequence(chips, Color.Blue, sequence, new HashSet<ColorChip>());
+            var allSequences = new List<List<ColorChip>>();
+            FindSequences(new List<ColorChip>(), chips, startColor, allSequences);
 
-            if (found && sequence.Last().EndColor == Color.Green)
-            {
-                return sequence;
-            }
-            return null;
+            var longestSequence = allSequences
+                .Where(seq => seq.LastOrDefault()?.EndColor == endColor)
+                .OrderByDescending(seq => seq.Count)
+                .FirstOrDefault();
+
+            return longestSequence;
         }
 
-        static bool FindSequence(List<ColorChip> chips, Color currentColor, List<ColorChip> sequence, HashSet<ColorChip> usedChips)
+        static void FindSequences(List<ColorChip> current, List<ColorChip> available, Color requiredStart, List<List<ColorChip>> allSequences)
         {
-            if (currentColor == Color.Green && sequence.Count > 0)
+            bool foundAny = false;
+            foreach (var chip in available.Where(chip => chip.StartColor == requiredStart))
             {
-                return true;
+                foundAny = true;
+                var newCurrent = new List<ColorChip>(current) { chip };
+                var newAvailable = new List<ColorChip>(available);
+                newAvailable.Remove(chip);
+                FindSequences(newCurrent, newAvailable, chip.EndColor, allSequences);
             }
 
-            foreach (var chip in chips)
+            if (!foundAny)
             {
-                if (!usedChips.Contains(chip) && chip.StartColor == currentColor)
-                {
-                    sequence.Add(chip);
-                    usedChips.Add(chip);
-
-                    if (FindSequence(chips, chip.EndColor, sequence, usedChips))
-                    {
-                        return true;
-                    }
-
-                    sequence.RemoveAt(sequence.Count - 1);
-                    usedChips.Remove(chip);
-                }
+                allSequences.Add(new List<ColorChip>(current));
             }
-
-            return false;
         }
     }
 }
