@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ChipSecuritySystem
 {
@@ -10,69 +8,91 @@ namespace ChipSecuritySystem
     {
         static void Main(string[] args)
         {
-            var chips = new List<ColorChip>
-            {
-                new ColorChip(Color.Blue, Color.Yellow),
-                new ColorChip(Color.Red, Color.Green),
-                new ColorChip(Color.Yellow, Color.Red),
-                new ColorChip(Color.Orange, Color.Purple)
-            };
+            int i = 0;
+            while(i < 3) { 
+            List<ColorChip> chips = GenerateRandomChips(6); // Generate 6 random chips
 
-            var result = FindChipSequence(chips);
+            var result = FindLongestSequence(chips, Color.Blue, Color.Green);
 
-            if (result != null)
+            if (result.Sequence != null && result.Sequence.Any())
             {
-                Console.WriteLine("Sequence found:");
-                foreach (var chip in result)
+                Console.WriteLine("\nSequence found:");
+                foreach (var chip in result.Sequence)
                 {
                     Console.WriteLine(chip);
                 }
             }
             else
             {
-                Console.WriteLine(Constants.ErrorMessage);
+                Console.WriteLine(Constants.ErrorMessage + Environment.NewLine);
             }
-            Console.WriteLine("Press Enter to exit...");
+
+            Console.WriteLine("\nUnused chips:");
+            foreach (var chip in result.UnusedChips)
+            {
+                Console.WriteLine($"{chip.StartColor}, {chip.EndColor}");
+            }
+                i++;
+            
+        }
+            Console.WriteLine("\nPress Enter to exit...");
             Console.ReadLine();
         }
 
-        static List<ColorChip> FindChipSequence(List<ColorChip> chips)
+        static List<ColorChip> GenerateRandomChips(int count)
         {
-            var sequence = new List<ColorChip>();
-            bool found = FindSequence(chips, Color.Blue, sequence, new HashSet<ColorChip>());
+            Random random = new Random();
+            List<ColorChip> chips = new List<ColorChip>();
 
-            if (found && sequence.Last().EndColor == Color.Green)
+            for (int i = 0; i < count; i++)
             {
-                return sequence;
+                Color startColor = (Color)random.Next(Enum.GetValues(typeof(Color)).Length);
+                Color endColor = (Color)random.Next(Enum.GetValues(typeof(Color)).Length);
+                ColorChip chip = new ColorChip(startColor, endColor);
+                chips.Add(chip);
             }
-            return null;
+
+            return chips;
         }
 
-        static bool FindSequence(List<ColorChip> chips, Color currentColor, List<ColorChip> sequence, HashSet<ColorChip> usedChips)
+        static (List<ColorChip> Sequence, List<ColorChip> UnusedChips) FindLongestSequence(List<ColorChip> chips, Color startColor, Color endColor)
         {
-            if (currentColor == Color.Green && sequence.Count > 0)
-            {
-                return true;
-            }
+            var allSequences = new List<List<ColorChip>>();
+            FindSequences(new List<ColorChip>(), chips, startColor, allSequences);
 
-            foreach (var chip in chips)
+            var longestSequence = allSequences
+                .Where(seq => seq.LastOrDefault()?.EndColor == endColor)
+                .OrderByDescending(seq => seq.Count)
+                .FirstOrDefault();
+
+            var unusedChips = new List<ColorChip>(chips);
+            if (longestSequence != null)
             {
-                if (!usedChips.Contains(chip) && chip.StartColor == currentColor)
+                foreach (var chip in longestSequence)
                 {
-                    sequence.Add(chip);
-                    usedChips.Add(chip);
-
-                    if (FindSequence(chips, chip.EndColor, sequence, usedChips))
-                    {
-                        return true;
-                    }
-
-                    sequence.RemoveAt(sequence.Count - 1);
-                    usedChips.Remove(chip);
+                    unusedChips.Remove(chip);
                 }
             }
 
-            return false;
+            return (longestSequence, unusedChips);
+        }
+
+        static void FindSequences(List<ColorChip> current, List<ColorChip> available, Color requiredStart, List<List<ColorChip>> allSequences)
+        {
+            bool foundAny = false;
+            foreach (var chip in available.Where(chip => chip.StartColor == requiredStart))
+            {
+                foundAny = true;
+                var newCurrent = new List<ColorChip>(current) { chip };
+                var newAvailable = new List<ColorChip>(available);
+                newAvailable.Remove(chip);
+                FindSequences(newCurrent, newAvailable, chip.EndColor, allSequences);
+            }
+
+            if (!foundAny)
+            {
+                allSequences.Add(new List<ColorChip>(current));
+            }
         }
     }
 }

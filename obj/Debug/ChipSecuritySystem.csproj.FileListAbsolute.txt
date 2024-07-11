@@ -5,10 +5,13 @@ d:\development\ChipSecuritySystem\ChipSecuritySystem\obj\Debug\ChipSecuritySyste
 d:\development\ChipSecuritySystem\ChipSecuritySystem\obj\Debug\ChipSecuritySystem.csproj.CoreCompileInputs.cache
 d:\development\ChipSecuritySystem\ChipSecuritySystem\obj\Debug\ChipSecuritySystem.exe
 d:\development\ChipSecuritySystem\ChipSecuritySystem\obj\Debug\ChipSecuritySystem.pdb
-C:\Users\Caleb's Beast\Downloads\ChipSecuritySystem\ChipSecuritySystem\obj\Debug\ChipSecuritySystem.exe
-C:\Users\Caleb's Beast\Downloads\ChipSecuritySystem\ChipSecuritySystem\obj\Debug\ChipSecuritySystem.pdb
 C:\Users\Caleb's Beast\Downloads\ChipSecuritySystem\ChipSecuritySystem\bin\Debug\ChipSecuritySystem.exe.config
 C:\Users\Caleb's Beast\Downloads\ChipSecuritySystem\ChipSecuritySystem\bin\Debug\ChipSecuritySystem.exe
 C:\Users\Caleb's Beast\Downloads\ChipSecuritySystem\ChipSecuritySystem\bin\Debug\ChipSecuritySystem.pdb
+C:\Users\Caleb's Beast\Downloads\ChipSecuritySystem\ChipSecuritySystem\bin\Debug\System.ValueTuple.dll
+C:\Users\Caleb's Beast\Downloads\ChipSecuritySystem\ChipSecuritySystem\bin\Debug\System.ValueTuple.xml
 C:\Users\Caleb's Beast\Downloads\ChipSecuritySystem\ChipSecuritySystem\obj\Debug\ChipSecuritySystem.csproj.AssemblyReference.cache
 C:\Users\Caleb's Beast\Downloads\ChipSecuritySystem\ChipSecuritySystem\obj\Debug\ChipSecuritySystem.csproj.CoreCompileInputs.cache
+C:\Users\Caleb's Beast\Downloads\ChipSecuritySystem\ChipSecuritySystem\obj\Debug\ChipSecu.61F75169.Up2Date
+C:\Users\Caleb's Beast\Downloads\ChipSecuritySystem\ChipSecuritySystem\obj\Debug\ChipSecuritySystem.exe
+C:\Users\Caleb's Beast\Downloads\ChipSecuritySystem\ChipSecuritySystem\obj\Debug\ChipSecuritySystem.pdb
